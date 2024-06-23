@@ -52,5 +52,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
-
+    implementation ("com.github.pwittchen:reactivenetwork-rx2:3.0.8")
 }

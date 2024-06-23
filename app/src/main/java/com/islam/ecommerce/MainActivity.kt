@@ -5,16 +5,22 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import android.widget.TextView
 import android.window.SplashScreenView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.islam.ecommerce.utils.AddCartException
+import com.islam.ecommerce.utils.CrashlyticsUils
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
        initialSplasScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        findViewById<TextView>(R.id.hello).setOnClickListener{
+            CrashlyticsUils.sendCustomLogToCrashlytics<AddCartException>("crash button clicked",Pair("crash key","crashlytics value"))
+        }
     }
 
     private fun initialSplasScreen() {
