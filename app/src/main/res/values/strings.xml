@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">E-Commerce</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="sign_in_to_continue">sign in to continue</string>
+    <string name="ok" translatable="false">Ok</string>
+    <string name="retry" translatable="false">Retry</string>
+    <string name="google_sign_in_field_msg" translatable="false">Google sign in failed, please retry again later.</string>
+    <string name="generic_err_msg" translatable="false">Error please try again later.</string>
+
 </resources>
