@@ -1,4 +1,4 @@
-package com.islam.ecommerce.ui.views
+package com.islam.ecommerce.ui.common.views
 
 import android.app.Dialog
 import android.content.Context

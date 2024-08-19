@@ -6,35 +6,51 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.facebook.FacebookSdk
 import com.islam.ecommerce.R
 import com.islam.ecommerce.ui.auth.AuthActivity
+import com.islam.ecommerce.ui.common.viewmodels.UserViewModel
+import com.islam.ecommerce.ui.common.viewmodels.UserViewModelFactory
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory(context = this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initialSplasScreen()
         super.onCreate(savedInstanceState)
-
-
-        lifecycleScope.launch {
-            if (false) {
-                setContentView(R.layout.activity_main)
-            } else {
-                goToAuthActivity()
-            }
+        val isLoggedIn = runBlocking {
+            userViewModel.isUserLoggedIn().first()
         }
-
+        if (!isLoggedIn) {
+            goToAuthActivity()
+            return
+        }
+        setContentView(R.layout.activity_main)
+        initViewModel()
     }
 
     private fun goToAuthActivity() {
         val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun initViewModel() {
+        lifecycleScope.launch {
+            val userDetails = runBlocking { userViewModel.getUserDetails().first() }
+            userViewModel.userDetailsState.collect {
+
+            }
+
+        }
     }
 
 

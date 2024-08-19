@@ -8,8 +8,11 @@ import com.github.pwittchen.reactivenetwork.library.rx2.ConnectivityPredicate
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.islam.ecommerce.utils.CustomCrashlyticsLogException
+import com.islam.ecommerce.utils.LoginException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+
 
 
 class MyApplication: Application() {
@@ -23,9 +26,10 @@ class MyApplication: Application() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{isConnected:Boolean ->
-                Log.i("MyApplication","connected to internet$isConnected")
-                FirebaseCrashlytics.getInstance().setCustomKey("connected to internet ",isConnected)
-
-            };
+                FirebaseCrashlytics.getInstance().setCustomKey("connected to internet = ",isConnected)
+                FirebaseCrashlytics.getInstance().recordException(LoginException("hello here"))
+            }
     }
+
+
 }

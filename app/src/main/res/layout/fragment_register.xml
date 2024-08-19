@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
-            name="loginViewModel"
-            type="com.islam.ecommerce.ui.auth.viewmodel.LoginViewModel" />
+            name="registerViewModel"
+            type="com.islam.ecommerce.ui.auth.viewmodel.RegisterViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -38,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="welcome to Lafyuu"
+                android:text="Let's Get Started"
                 app:layout_constraintEnd_toEndOf="@+id/logo"
                 app:layout_constraintStart_toStartOf="@+id/logo"
                 app:layout_constraintTop_toBottomOf="@+id/logo" />
@@ -50,10 +49,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/sign_in_to_continue"
+                android:text="@string/create_an_new_account"
                 app:layout_constraintEnd_toEndOf="@+id/greeting"
                 app:layout_constraintStart_toStartOf="@+id/greeting"
                 app:layout_constraintTop_toBottomOf="@+id/greeting" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/name_et"
+                style="@style/thirdStyle"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/user"
+                android:hint="Your Name"
+                android:inputType="text"
+                android:text="@={registerViewModel.name}"
+                app:layout_constraintEnd_toEndOf="@+id/password"
+                app:layout_constraintStart_toStartOf="@+id/password"
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/email_et"
@@ -64,10 +77,10 @@
                 android:drawableLeft="@drawable/ic_email"
                 android:hint="Your Email"
                 android:inputType="textEmailAddress"
-                android:text="@={loginViewModel.email}"
-                app:layout_constraintEnd_toEndOf="@+id/password"
-                app:layout_constraintStart_toStartOf="@+id/password"
-                app:layout_constraintTop_toBottomOf="@+id/password" />
+                android:text="@={registerViewModel.email}"
+                app:layout_constraintEnd_toEndOf="@+id/name_et"
+                app:layout_constraintStart_toStartOf="@+id/name_et"
+                app:layout_constraintTop_toBottomOf="@+id/name_et" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/textView"
@@ -78,23 +91,37 @@
                 android:drawableLeft="@drawable/ic_password"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:text="@={loginViewModel.password}"
+                android:text="@={registerViewModel.password}"
                 app:layout_constraintEnd_toEndOf="@+id/email_et"
                 app:layout_constraintStart_toStartOf="@+id/email_et"
                 app:layout_constraintTop_toBottomOf="@+id/email_et" />
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/confirm_password"
+                style="@style/thirdStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_password"
+                android:hint="@string/password_again"
+                android:inputType="textPassword"
+                android:text="@={registerViewModel.confirmPassword}"
+                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sign_in"
+                android:id="@+id/sign_in_btn"
                 style="@style/buttonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:onClick="@{()->loginViewModel.loginWithEmailAndPassword()}"
+                android:onClick="@{()->registerViewModel.registerWithEmailAndPassword()}"
                 android:text="sign in"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="@+id/textView"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintEnd_toEndOf="@+id/confirm_password"
+                app:layout_constraintStart_toStartOf="@+id/confirm_password"
+                app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
 
             <View
                 android:id="@+id/line"
@@ -102,9 +129,9 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/neutral_light"
-                app:layout_constraintEnd_toEndOf="@+id/sign_in"
-                app:layout_constraintStart_toStartOf="@+id/sign_in"
-                app:layout_constraintTop_toBottomOf="@+id/sign_in" />
+                app:layout_constraintEnd_toEndOf="@+id/sign_in_btn"
+                app:layout_constraintStart_toStartOf="@+id/sign_in_btn"
+                app:layout_constraintTop_toBottomOf="@+id/sign_in_btn" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/orText"
@@ -128,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_google"
-                android:text="Login with Google"
+                android:text="@string/login_with_google"
                 app:layout_constraintEnd_toEndOf="@+id/orText"
                 app:layout_constraintStart_toStartOf="@+id/orText"
                 app:layout_constraintTop_toBottomOf="@+id/orText" />
@@ -140,31 +167,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:drawableLeft="@drawable/ic_facebook"
-                android:text="Login with facebook"
+                android:text="@string/login_with_facebook"
                 app:layout_constraintEnd_toEndOf="@+id/loginWithGoogle"
                 app:layout_constraintStart_toStartOf="@+id/loginWithGoogle"
                 app:layout_constraintTop_toBottomOf="@+id/loginWithGoogle" />
 
-            <TextView
-                android:id="@+id/forgotPassword"
-                style="@style/blueTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:text="Forgot Password?"
-                app:layout_constraintEnd_toEndOf="@+id/loginWithFacebook"
-                app:layout_constraintStart_toStartOf="@+id/loginWithFacebook"
-                app:layout_constraintTop_toBottomOf="@+id/loginWithFacebook" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/forgotPassword"
-                app:layout_constraintStart_toStartOf="@+id/forgotPassword"
-                app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
+                app:layout_constraintEnd_toEndOf="@+id/loginWithFacebook"
+                app:layout_constraintStart_toStartOf="@+id/loginWithFacebook"
+                app:layout_constraintTop_toBottomOf="@+id/loginWithFacebook"
                 app:layout_constraintVertical_bias="0.158">
 
                 <TextView
@@ -172,18 +188,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:text="Don't have an account?" />
+                    android:text="@string/have_an_account" />
 
                 <TextView
-                    android:id="@+id/register"
+                    android:id="@+id/sign_in_tx"
                     style="@style/blueTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Register" />
+                    android:text="@string/sign_in" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </layout>

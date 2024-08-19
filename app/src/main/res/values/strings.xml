@@ -7,5 +7,12 @@
     <string name="retry" translatable="false">Retry</string>
     <string name="google_sign_in_field_msg" translatable="false">Google sign in failed, please retry again later.</string>
     <string name="generic_err_msg" translatable="false">Error please try again later.</string>
+    <string name="create_an_new_account">create an new account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="login_with_facebook">Login with facebook</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="password_again">Password Again</string>
+    <string name="have_an_account">have an account</string>
 
 </resources>
