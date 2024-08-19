@@ -10,7 +10,6 @@ import com.islam.ecommerce.data.models.user.AuthProvider
 import com.islam.ecommerce.data.models.user.UserDetailsModel
 import com.islam.ecommerce.utils.CrashlyticsUils
 import com.islam.ecommerce.utils.LoginException
-import com.islam.ecommerce.utils.isValidEmail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -37,7 +36,7 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Error(Exception(msg)))
                 return@flow
             }
-            if (authResult.user?.isEmailVerified()==false) {
+            if (authResult.user?.isEmailVerified() == false) {
                 val mag = "Verify Your Email"
                 emit(Resource.Error(Exception(mag)))
                 return@flow
@@ -129,4 +128,32 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
+    override suspend fun registerWithGoogle(idToken: String): Flow<Resource<UserDetailsModel>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                val authResult = auth.signInWithCredential(credential).await()
+                val userId = authResult.user?.uid
+                if (userId == null) {
+                    val msg = "sign upp UserID not found"
+                    logAuthIssueToCrashlytics(msg, AuthProvider.GOOGLE.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+                val userDetails = UserDetailsModel(
+                    id = userId,
+                    name = authResult.user?.displayName ?: "",
+                    email = authResult.user?.email ?: "",
+                )
+                firebaseFirestore.collection("users").document(userId).set(userDetails).await()
+                emit(Resource.Success(userDetails))
+            } catch (e: Exception) {
+                logAuthIssueToCrashlytics(
+                    e.message ?: "UnKnown error form exception = ${e::class.java}",
+                    AuthProvider.GOOGLE.name
+                )
+                emit(Resource.Error(e))
+            }
+        }
 }

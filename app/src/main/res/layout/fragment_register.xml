@@ -111,13 +111,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sign_in_btn"
+                android:id="@+id/sign_up_btn"
                 style="@style/buttonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:onClick="@{()->registerViewModel.registerWithEmailAndPassword()}"
-                android:text="sign in"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/confirm_password"
                 app:layout_constraintStart_toStartOf="@+id/confirm_password"
@@ -129,9 +129,9 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="32dp"
                 android:background="@color/neutral_light"
-                app:layout_constraintEnd_toEndOf="@+id/sign_in_btn"
-                app:layout_constraintStart_toStartOf="@+id/sign_in_btn"
-                app:layout_constraintTop_toBottomOf="@+id/sign_in_btn" />
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_btn"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_btn"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_btn" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/orText"
@@ -150,7 +150,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/line" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/loginWithGoogle"
+                android:id="@+id/registerWithGoogle"
                 style="@style/socialBottonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,16 +161,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/orText" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/loginWithFacebook"
+                android:id="@+id/registerWithFacebook"
                 style="@style/socialBottonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:drawableLeft="@drawable/ic_facebook"
                 android:text="@string/login_with_facebook"
-                app:layout_constraintEnd_toEndOf="@+id/loginWithGoogle"
-                app:layout_constraintStart_toStartOf="@+id/loginWithGoogle"
-                app:layout_constraintTop_toBottomOf="@+id/loginWithGoogle" />
+                app:layout_constraintEnd_toEndOf="@+id/registerWithGoogle"
+                app:layout_constraintStart_toStartOf="@+id/registerWithGoogle"
+                app:layout_constraintTop_toBottomOf="@+id/registerWithGoogle" />
 
 
             <LinearLayout
@@ -178,9 +178,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/loginWithFacebook"
-                app:layout_constraintStart_toStartOf="@+id/loginWithFacebook"
-                app:layout_constraintTop_toBottomOf="@+id/loginWithFacebook"
+                app:layout_constraintEnd_toEndOf="@+id/registerWithFacebook"
+                app:layout_constraintStart_toStartOf="@+id/registerWithFacebook"
+                app:layout_constraintTop_toBottomOf="@+id/registerWithFacebook"
                 app:layout_constraintVertical_bias="0.158">
 
                 <TextView
@@ -191,7 +191,7 @@
                     android:text="@string/have_an_account" />
 
                 <TextView
-                    android:id="@+id/sign_in_tx"
+                    android:id="@+id/sign_up_tx"
                     style="@style/blueTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

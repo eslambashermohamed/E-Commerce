@@ -14,5 +14,6 @@
     <string name="login_with_google">Login with Google</string>
     <string name="password_again">Password Again</string>
     <string name="have_an_account">have an account</string>
+    <string name="sign_up">sign Up</string>
 
 </resources>

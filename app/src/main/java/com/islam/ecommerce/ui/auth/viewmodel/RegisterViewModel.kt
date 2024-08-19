@@ -14,6 +14,7 @@ import com.islam.ecommerce.data.repository.common.AppDataStoreRepositoryImpl
 import com.islam.ecommerce.data.repository.common.AppPreferenceRepository
 import com.islam.ecommerce.data.repository.user.UserPreferenceRepository
 import com.islam.ecommerce.data.repository.user.UserPreferenceRepositoryImpl
+import com.islam.ecommerce.domain.models.toUserDetailsPreferences
 import com.islam.ecommerce.utils.isValidEmail
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -53,8 +54,28 @@ class RegisterViewModel(
 
     fun registerWithGoogle(idToken: String) {
 
+            handleLoginFlow { firebaseAuthRepository.registerWithGoogle(idToken) }
+
     }
 
+    private suspend fun savePreferenceData(userDetailsModel: UserDetailsModel) {
+        appPreferenceRepository.saveLoginState(true)
+        userPreferenceRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences())
+    }
+
+    private fun handleLoginFlow(loginFlow: suspend () -> Flow<Resource<UserDetailsModel>>) =
+        viewModelScope.launch(IO) {
+            loginFlow().collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        savePreferenceData(resource.data!!)
+                        _registerState.emit(Resource.Success(resource.data))
+                    }
+
+                    else -> _registerState.emit(resource)
+                }
+            }
+        }
     fun registerWithFacebook(token: String) {
     }
 
