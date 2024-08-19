@@ -76,13 +76,16 @@ class RegisterViewModel(
                 }
             }
         }
-    fun registerWithFacebook(token: String) {
-    }
+
 
     fun isRegisterValidate() =
         combine(name, email, password, confirmPassword) { name, email, password, confirmPassword ->
             email.isValidEmail() && name.isNotEmpty() && password.length >= 6 && confirmPassword.isNotEmpty() && password == confirmPassword
         }
+
+    fun registerWithFacebook(token: String) {
+        handleLoginFlow { firebaseAuthRepository.registerWithFacebook(token) }
+    }
 
 }
 
@@ -103,6 +106,6 @@ class RegisterviewModelFactory(
                 authRepository
             ) as T
         }
-        throw IllegalArgumentException("un nowen viewModel class")
+        throw IllegalArgumentException("unknown viewModel class")
     }
 }

@@ -101,6 +101,7 @@ class FirebaseAuthRepositoryImpl(
         auth.signOut()
     }
 
+
     override suspend fun registerWithEmailAndPassword(
         email: String,
         password: String,
@@ -156,4 +157,46 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Error(e))
             }
         }
+
+    override suspend fun registerWithFacebook(token: String): Flow<Resource<UserDetailsModel>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+                val credential = FacebookAuthProvider.getCredential(token)
+                val authResult = auth.signInWithCredential(credential).await()
+                val userId = authResult.user?.uid
+                if (userId == null) {
+                    val msg = "sign upp UserID not found"
+                    logAuthIssueToCrashlytics(msg, AuthProvider.GOOGLE.name)
+                    emit(Resource.Error(Exception(msg)))
+                    return@flow
+                }
+                val userDetails = UserDetailsModel(
+                    id = userId,
+                    name = authResult.user?.displayName ?: "",
+                    email = authResult.user?.email ?: "",
+                )
+                firebaseFirestore.collection("users").document(userId).set(userDetails).await()
+                emit(Resource.Success(userDetails))
+            } catch (e: Exception) {
+                logAuthIssueToCrashlytics(
+                    e.message ?: "UnKnown error form exception = ${e::class.java}",
+                    AuthProvider.GOOGLE.name
+                )
+                emit(Resource.Error(e))
+            }
+        }
+
+    override suspend fun sendEmailToUpdatePassword(email: String): Flow<Resource<String>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                auth.sendPasswordResetEmail(email).await()
+                emit(Resource.Success("password reset email send"))
+            } catch (e: Exception) {
+                emit(Resource.Error(e))
+            }
+
+        }
+    }
 }

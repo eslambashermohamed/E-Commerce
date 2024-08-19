@@ -30,6 +30,7 @@ import com.islam.ecommerce.R
 import com.islam.ecommerce.data.models.Resource
 import com.islam.ecommerce.data.models.user.UserDetailsModel
 import com.islam.ecommerce.databinding.FragmentLoginBinding
+import com.islam.ecommerce.ui.auth.ForgetPasswordFragment
 import com.islam.ecommerce.ui.auth.viewmodel.LoginViewModel
 import com.islam.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
 import com.islam.ecommerce.ui.common.views.ProgressDialog
@@ -170,15 +171,16 @@ class LoginFragment : Fragment() {
         binding.loginWithFacebook.setOnClickListener {
             if (isLoggedIn()) {
                 goToHome()
-                Log.i("MYCODE", "isLogged")
             } else {
                 loginWithFacebook()
-                Log.i("MYCODE", "notlogged")
-
             }
         }
         binding.register.setOnClickListener{
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+        binding.forgotPassword.setOnClickListener{
+            val forgetPasswordFragment=ForgetPasswordFragment()
+            forgetPasswordFragment.show(parentFragmentManager,"forget password")
         }
     }
 

@@ -15,5 +15,6 @@
     <string name="password_again">Password Again</string>
     <string name="have_an_account">have an account</string>
     <string name="sign_up">sign Up</string>
+    <string name="forget_password_msg">enter your email to send email to update your password</string>
 
 </resources>

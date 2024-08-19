@@ -1,5 +1,6 @@
 package com.islam.ecommerce.ui.auth.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -30,7 +36,8 @@ import kotlinx.coroutines.launch
 
 
 class RegisterFragment : Fragment() {
-
+    private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
+    private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
     lateinit var binding: FragmentRegisterBinding;
     val registerViewModel: RegisterViewModel by viewModels {
         RegisterviewModelFactory(requireContext())
@@ -62,7 +69,7 @@ class RegisterFragment : Fragment() {
             registerWithGoogleRequest()
         }
         binding.registerWithFacebook.setOnClickListener {
-
+             registerWithFacebook()
         }
     }
 
@@ -135,5 +142,32 @@ class RegisterFragment : Fragment() {
             CrashlyticsUils.REGISTER_KEY to msg,
             CrashlyticsUils.LOGIN_PROVIDER to provider,
         )
+    }
+
+    private fun registerWithFacebook() {
+        loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                val token = result.accessToken.token
+                registerViewModel.registerWithFacebook(token)
+            }
+
+            override fun onCancel() {}
+
+            override fun onError(error: FacebookException) {
+                // val msg = error.message ?: getString(R.string.generic_err_msg)
+                //view?.showSnakeBarError(msg)
+                //logAuthIssueToCrashlytics(msg, "Facebook")
+            }
+        })
+        loginManager.logInWithReadPermissions(
+            this,
+            callbackManager,
+            listOf("email", "public_profile")
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 }
