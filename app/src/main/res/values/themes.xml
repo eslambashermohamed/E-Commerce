@@ -1,9 +1,70 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ECommerce" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.ECommerce" parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryColor</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
     </style>
 
     <style name="Theme.ECommerce" parent="Base.Theme.ECommerce" />
+
+    <style name="Theme.MainActivity" parent="Base.Theme.ECommerce">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/primaryColor</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+
+    <style name="greedingText">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize"> 16dp</item>
+        <item name="android:textColor">@color/primaryDark</item>
+    </style>
+
+    <style name="sencondStyle">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/grayColor</item>
+    </style>
+    <style name="thirdStyle">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/grayColor</item>
+        <item name="android:paddingLeft"> 15dp </item>
+        <item name="android:paddingTop">15dp</item>
+        <item name ="android:drawablePadding">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:background">@drawable/text_background</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="buttonStyle">
+        <item name="android:background">@color/primaryColor</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="socialBottonStyle">
+        <item name="android:background">@drawable/text_background</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:paddingLeft"> 16dp </item>
+        <item name="android:paddingTop">16dp</item>
+        <item name ="android:drawablePadding">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/neutral_gray</item>
+    </style>
+
+    <style name="blueTextViewStyle">
+        <item name="android:textColor">@color/primary_blue</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>

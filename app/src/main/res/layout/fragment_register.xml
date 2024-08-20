@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="registerViewModel"
+            type="com.islam.ecommerce.ui.auth.viewmodel.RegisterViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_logo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/greeting"
+                style="@style/greedingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Let's Get Started"
+                app:layout_constraintEnd_toEndOf="@+id/logo"
+                app:layout_constraintStart_toStartOf="@+id/logo"
+                app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/password"
+                style="@style/sencondStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/create_an_new_account"
+                app:layout_constraintEnd_toEndOf="@+id/greeting"
+                app:layout_constraintStart_toStartOf="@+id/greeting"
+                app:layout_constraintTop_toBottomOf="@+id/greeting" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/name_et"
+                style="@style/thirdStyle"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/user"
+                android:hint="Your Name"
+                android:inputType="text"
+                android:text="@={registerViewModel.name}"
+                app:layout_constraintEnd_toEndOf="@+id/password"
+                app:layout_constraintStart_toStartOf="@+id/password"
+                app:layout_constraintTop_toBottomOf="@+id/password" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/email_et"
+                style="@style/thirdStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_email"
+                android:hint="Your Email"
+                android:inputType="textEmailAddress"
+                android:text="@={registerViewModel.email}"
+                app:layout_constraintEnd_toEndOf="@+id/name_et"
+                app:layout_constraintStart_toStartOf="@+id/name_et"
+                app:layout_constraintTop_toBottomOf="@+id/name_et" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textView"
+                style="@style/thirdStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_password"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:text="@={registerViewModel.password}"
+                app:layout_constraintEnd_toEndOf="@+id/email_et"
+                app:layout_constraintStart_toStartOf="@+id/email_et"
+                app:layout_constraintTop_toBottomOf="@+id/email_et" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/confirm_password"
+                style="@style/thirdStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_password"
+                android:hint="@string/password_again"
+                android:inputType="textPassword"
+                android:text="@={registerViewModel.confirmPassword}"
+                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sign_up_btn"
+                style="@style/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{()->registerViewModel.registerWithEmailAndPassword()}"
+                android:text="@string/sign_up"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="@+id/confirm_password"
+                app:layout_constraintStart_toStartOf="@+id/confirm_password"
+                app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="32dp"
+                android:background="@color/neutral_light"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_btn"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_btn"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_btn" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/orText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/white"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="12dp"
+                android:text="OR"
+                android:textColor="@color/neutral_gray"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/line"
+                app:layout_constraintEnd_toEndOf="@+id/line"
+                app:layout_constraintStart_toStartOf="@+id/line"
+                app:layout_constraintTop_toBottomOf="@+id/line" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/registerWithGoogle"
+                style="@style/socialBottonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_google"
+                android:text="@string/login_with_google"
+                app:layout_constraintEnd_toEndOf="@+id/orText"
+                app:layout_constraintStart_toStartOf="@+id/orText"
+                app:layout_constraintTop_toBottomOf="@+id/orText" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/registerWithFacebook"
+                style="@style/socialBottonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:drawableLeft="@drawable/ic_facebook"
+                android:text="@string/login_with_facebook"
+                app:layout_constraintEnd_toEndOf="@+id/registerWithGoogle"
+                app:layout_constraintStart_toStartOf="@+id/registerWithGoogle"
+                app:layout_constraintTop_toBottomOf="@+id/registerWithGoogle" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/registerWithFacebook"
+                app:layout_constraintStart_toStartOf="@+id/registerWithFacebook"
+                app:layout_constraintTop_toBottomOf="@+id/registerWithFacebook"
+                app:layout_constraintVertical_bias="0.158">
+
+                <TextView
+                    android:id="@+id/haveAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/have_an_account" />
+
+                <TextView
+                    android:id="@+id/sign_up_tx"
+                    style="@style/blueTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_in" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
