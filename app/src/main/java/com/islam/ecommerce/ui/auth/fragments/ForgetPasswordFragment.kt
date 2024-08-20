@@ -1,4 +1,4 @@
-package com.islam.ecommerce.ui.auth
+package com.islam.ecommerce.ui.auth.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 
 
 class ForgetPasswordFragment : BottomSheetDialogFragment() {
+
     var _binding: FragmentForgetPasswordBinding? = null
     val binding get() = _binding
     val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels {
