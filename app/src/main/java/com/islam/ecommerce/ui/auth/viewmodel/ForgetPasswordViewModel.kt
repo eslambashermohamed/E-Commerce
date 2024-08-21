@@ -8,13 +8,16 @@ import com.islam.ecommerce.data.models.Resource
 import com.islam.ecommerce.data.repository.auth.FirebaseAuthRepository
 import com.islam.ecommerce.ui.common.views.ProgressDialog
 import com.islam.ecommerce.utils.isValidEmail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ForgetPasswordViewModel(val authRepository: FirebaseAuthRepository) : ViewModel() {
+@HiltViewModel
+class ForgetPasswordViewModel @Inject constructor(val authRepository: FirebaseAuthRepository) : ViewModel() {
     val email = MutableStateFlow("")
     private val _forgetPasswordState = MutableSharedFlow<Resource<String>>()
     val forgetPasswordState: SharedFlow<Resource<String>> = _forgetPasswordState
@@ -30,12 +33,3 @@ class ForgetPasswordViewModel(val authRepository: FirebaseAuthRepository) : View
 }
 }
 
-class ForgetPasswordViewModelFactory(val authRepository: FirebaseAuthRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        if (modelClass.isAssignableFrom(ForgetPasswordViewModel::class.java)) {
-            return ForgetPasswordViewModel(authRepository) as T
-        }
-        throw Throwable("unknown viewModel")
-    }
-}

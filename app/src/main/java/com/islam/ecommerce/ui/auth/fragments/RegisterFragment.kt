@@ -2,12 +2,9 @@ package com.islam.ecommerce.ui.auth.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,40 +23,29 @@ import com.islam.ecommerce.R
 import com.islam.ecommerce.data.models.Resource
 import com.islam.ecommerce.databinding.FragmentRegisterBinding
 import com.islam.ecommerce.ui.auth.viewmodel.RegisterViewModel
-import com.islam.ecommerce.ui.auth.viewmodel.RegisterviewModelFactory
+import com.islam.ecommerce.ui.common.BaseFragment
 import com.islam.ecommerce.ui.common.views.AlertDialog
-import com.islam.ecommerce.ui.common.views.ProgressDialog
 import com.islam.ecommerce.ui.showSnakeBarError
 import com.islam.ecommerce.utils.CrashlyticsUils
 import com.islam.ecommerce.utils.RegisterException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
-class RegisterFragment : Fragment() {
+@AndroidEntryPoint
+class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel>() {
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
-    lateinit var binding: FragmentRegisterBinding;
-    val registerViewModel: RegisterViewModel by viewModels {
-        RegisterviewModelFactory(requireContext())
-    }
 
-    val progressDialog by lazy {
-        ProgressDialog.createProgressDialog(requireActivity())
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override val viewModel: RegisterViewModel by viewModels ()
 
-        binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        binding.registerViewModel = registerViewModel
-        binding.lifecycleOwner = this
+    override fun getResId() = R.layout.fragment_register
+
+    override fun init() {
         iniListeners()
         initViewModel()
-        return binding.root
     }
+
 
     private fun iniListeners() {
         binding.signUpTx.setOnClickListener {
@@ -69,13 +55,13 @@ class RegisterFragment : Fragment() {
             registerWithGoogleRequest()
         }
         binding.registerWithFacebook.setOnClickListener {
-             registerWithFacebook()
+            registerWithFacebook()
         }
     }
 
     fun initViewModel() {
         lifecycleScope.launch {
-            registerViewModel.registerState.collect { state ->
+            viewModel.registerState.collect { state ->
                 state?.let { resources ->
                     when (resources) {
                         is Resource.Loading -> {
@@ -127,7 +113,7 @@ class RegisterFragment : Fragment() {
     private fun handleSignUpResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            registerViewModel.registerWithGoogle(account.idToken!!)
+            viewModel.registerWithGoogle(account.idToken!!)
 
         } catch (e: Exception) {
             view?.showSnakeBarError(e.message ?: getString(R.string.generic_err_msg))
@@ -148,7 +134,7 @@ class RegisterFragment : Fragment() {
         loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {
                 val token = result.accessToken.token
-                registerViewModel.registerWithFacebook(token)
+                viewModel.registerWithFacebook(token)
             }
 
             override fun onCancel() {}

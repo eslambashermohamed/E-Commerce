@@ -1,18 +1,11 @@
 package com.islam.ecommerce.ui.auth.fragments
 
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -28,58 +21,36 @@ import com.google.android.gms.tasks.Task
 import com.islam.ecommerce.BuildConfig
 import com.islam.ecommerce.R
 import com.islam.ecommerce.data.models.Resource
-import com.islam.ecommerce.data.models.user.UserDetailsModel
 import com.islam.ecommerce.databinding.FragmentLoginBinding
-import com.islam.ecommerce.ui.auth.ForgetPasswordFragment
 import com.islam.ecommerce.ui.auth.viewmodel.LoginViewModel
-import com.islam.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
-import com.islam.ecommerce.ui.common.views.ProgressDialog
+import com.islam.ecommerce.ui.common.BaseFragment
 import com.islam.ecommerce.ui.home.MainActivity
 import com.islam.ecommerce.ui.showSnakeBarError
 import com.islam.ecommerce.utils.CrashlyticsUils
 import com.islam.ecommerce.utils.LoginException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
-class LoginFragment : Fragment() {
+@AndroidEntryPoint
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
 
-    val progressDialog by lazy {
-        ProgressDialog.createProgressDialog(requireActivity())
-    }
+    override fun getResId() = R.layout.fragment_login
 
-    val loginViewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(
-            requireActivity()
-        )
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.loginViewModel = loginViewModel
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun init() {
         initListeners()
         initViewModel()
     }
 
+    override val viewModel: LoginViewModel by viewModels()
+
+
     fun initViewModel() {
         lifecycleScope.launch {
-            loginViewModel.loginState.collect { state ->
+            viewModel.loginState.collect { state ->
                 state?.let { resources ->
                     when (resources) {
                         is Resource.Loading -> {
@@ -135,7 +106,7 @@ class LoginFragment : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            loginViewModel.loginWithGoogle(account.idToken!!)
+            viewModel.loginWithGoogle(account.idToken!!)
 
         } catch (e: Exception) {
             view?.showSnakeBarError(e.message ?: getString(R.string.generic_err_msg))
@@ -151,10 +122,6 @@ class LoginFragment : Fragment() {
         requireActivity().finish()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
     private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUils.sendCustomLogToCrashlytics<LoginException>(
@@ -169,18 +136,14 @@ class LoginFragment : Fragment() {
             loginWithGoogleRequest()
         }
         binding.loginWithFacebook.setOnClickListener {
-            if (isLoggedIn()) {
-                goToHome()
-            } else {
-                loginWithFacebook()
-            }
+            loginWithFacebook()
         }
-        binding.register.setOnClickListener{
+        binding.register.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-        binding.forgotPassword.setOnClickListener{
-            val forgetPasswordFragment=ForgetPasswordFragment()
-            forgetPasswordFragment.show(parentFragmentManager,"forget password")
+        binding.forgotPassword.setOnClickListener {
+            val forgetPasswordFragment = ForgetPasswordFragment()
+            forgetPasswordFragment.show(parentFragmentManager, "forget password")
         }
     }
 
@@ -197,7 +160,7 @@ class LoginFragment : Fragment() {
         loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult) {
                 val token = result.accessToken.token
-                loginViewModel.loginWithFacebook(token)
+                viewModel.loginWithFacebook(token)
             }
 
             override fun onCancel() {}

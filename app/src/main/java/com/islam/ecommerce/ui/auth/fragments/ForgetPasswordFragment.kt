@@ -1,4 +1,4 @@
-package com.islam.ecommerce.ui.auth
+package com.islam.ecommerce.ui.auth.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,19 +12,18 @@ import com.islam.ecommerce.data.models.Resource
 import com.islam.ecommerce.data.repository.auth.FirebaseAuthRepositoryImpl
 import com.islam.ecommerce.databinding.FragmentForgetPasswordBinding
 import com.islam.ecommerce.ui.auth.viewmodel.ForgetPasswordViewModel
-import com.islam.ecommerce.ui.auth.viewmodel.ForgetPasswordViewModelFactory
 import com.islam.ecommerce.ui.common.views.AlertDialog
 import com.islam.ecommerce.ui.common.views.ProgressDialog
 import com.islam.ecommerce.ui.showSnakeBarError
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ForgetPasswordFragment : BottomSheetDialogFragment() {
+
     var _binding: FragmentForgetPasswordBinding? = null
     val binding get() = _binding
-    val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels {
-        ForgetPasswordViewModelFactory(FirebaseAuthRepositoryImpl())
-    }
+    val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels()
     val progressDialog by lazy {
         ProgressDialog.createProgressDialog(requireContext())
     }
