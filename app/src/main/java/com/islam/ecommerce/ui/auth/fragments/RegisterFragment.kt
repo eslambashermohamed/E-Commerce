@@ -23,31 +23,28 @@ import com.islam.ecommerce.R
 import com.islam.ecommerce.data.models.Resource
 import com.islam.ecommerce.databinding.FragmentRegisterBinding
 import com.islam.ecommerce.ui.auth.viewmodel.RegisterViewModel
-import com.islam.ecommerce.ui.auth.viewmodel.RegisterviewModelFactory
 import com.islam.ecommerce.ui.common.BaseFragment
 import com.islam.ecommerce.ui.common.views.AlertDialog
 import com.islam.ecommerce.ui.showSnakeBarError
 import com.islam.ecommerce.utils.CrashlyticsUils
 import com.islam.ecommerce.utils.RegisterException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel>() {
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
 
 
-    override val viewModel: RegisterViewModel by viewModels {
-        RegisterviewModelFactory(requireContext())
-    }
+    override val viewModel: RegisterViewModel by viewModels ()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun getResId() = R.layout.fragment_register
+
+    override fun init() {
         iniListeners()
         initViewModel()
     }
-
-    override fun getResId() = R.layout.fragment_register
 
 
     private fun iniListeners() {

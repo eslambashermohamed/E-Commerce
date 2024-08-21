@@ -23,6 +23,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         doDataBinding()
+        init()
     }
 
     override fun onCreateView(
@@ -39,7 +40,8 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
 
     private fun doDataBinding() {
         _binding?.lifecycleOwner = viewLifecycleOwner
-        _binding?.setVariable(BR._all, viewModel)
+        _binding?.setVariable(BR.ViewModel, viewModel)
         _binding?.executePendingBindings()
     }
+    protected abstract fun init()
 }

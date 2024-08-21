@@ -1,8 +1,5 @@
 package com.islam.ecommerce.data.repository.auth
 
-import com.facebook.internal.WebDialog
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -16,10 +13,11 @@ import com.islam.ecommerce.utils.LoginException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class FirebaseAuthRepositoryImpl(
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+class FirebaseAuthRepositoryImpl @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val firebaseFirestore: FirebaseFirestore
 ) :
     FirebaseAuthRepository {
 
@@ -39,11 +37,6 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Error(Exception(msg)))
                 return@flow
             }
-            if (authResult.user?.isEmailVerified() == false) {
-                val mag = "Verify Your Email"
-                emit(Resource.Error(Exception(mag)))
-                return@flow
-            }
             // get user details from firestore
             val userDoc = firebaseFirestore.collection("users").document(userId).get().await()
 
@@ -53,7 +46,11 @@ class FirebaseAuthRepositoryImpl(
                 emit(Resource.Error(Exception(msg)))
                 return@flow
             }
-
+            if (authResult.user?.isEmailVerified() == false) {
+                val mag = "Verify Your Email"
+                emit(Resource.Error(Exception(mag)))
+                return@flow
+            }
             // map user details to UserDetailsModel
             val userDetails = userDoc.toObject(UserDetailsModel::class.java)
 
@@ -151,6 +148,7 @@ class FirebaseAuthRepositoryImpl(
                     email = authResult.user?.email ?: "",
                 )
                 firebaseFirestore.collection("users").document(userId).set(userDetails).await()
+                authResult.user?.sendEmailVerification()
                 emit(Resource.Success(userDetails))
             } catch (e: Exception) {
                 logAuthIssueToCrashlytics(
@@ -180,6 +178,7 @@ class FirebaseAuthRepositoryImpl(
                     email = authResult.user?.email ?: "",
                 )
                 firebaseFirestore.collection("users").document(userId).set(userDetails).await()
+                authResult.user?.sendEmailVerification()
                 emit(Resource.Success(userDetails))
             } catch (e: Exception) {
                 logAuthIssueToCrashlytics(

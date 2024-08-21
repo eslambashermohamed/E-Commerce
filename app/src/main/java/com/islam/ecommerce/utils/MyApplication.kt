@@ -10,11 +10,12 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.islam.ecommerce.utils.CustomCrashlyticsLogException
 import com.islam.ecommerce.utils.LoginException
+import dagger.hilt.android.HiltAndroidApp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-
+@HiltAndroidApp
 class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()

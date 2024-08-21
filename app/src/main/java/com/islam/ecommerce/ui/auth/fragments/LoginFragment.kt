@@ -1,10 +1,6 @@
 package com.islam.ecommerce.ui.auth.fragments
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -27,15 +23,15 @@ import com.islam.ecommerce.R
 import com.islam.ecommerce.data.models.Resource
 import com.islam.ecommerce.databinding.FragmentLoginBinding
 import com.islam.ecommerce.ui.auth.viewmodel.LoginViewModel
-import com.islam.ecommerce.ui.auth.viewmodel.LoginViewModelFactory
 import com.islam.ecommerce.ui.common.BaseFragment
 import com.islam.ecommerce.ui.home.MainActivity
 import com.islam.ecommerce.ui.showSnakeBarError
 import com.islam.ecommerce.utils.CrashlyticsUils
 import com.islam.ecommerce.utils.LoginException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
@@ -44,17 +40,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun getResId() = R.layout.fragment_login
 
-    override val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(
-            requireActivity()
-        )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun init() {
         initListeners()
         initViewModel()
     }
+
+    override val viewModel: LoginViewModel by viewModels()
+
 
     fun initViewModel() {
         lifecycleScope.launch {
@@ -144,11 +136,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             loginWithGoogleRequest()
         }
         binding.loginWithFacebook.setOnClickListener {
-            if (isLoggedIn()) {
-                goToHome()
-            } else {
-                loginWithFacebook()
-            }
+            loginWithFacebook()
         }
         binding.register.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)

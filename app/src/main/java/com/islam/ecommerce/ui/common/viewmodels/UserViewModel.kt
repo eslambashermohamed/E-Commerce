@@ -21,6 +21,7 @@ import com.islam.ecommerce.domain.models.toUserDetailsPreferences
 import com.islam.ecommerce.utils.CrashlyticsUils
 import com.islam.ecommerce.utils.CrashlyticsUils.LISTEN_TO_USER_DETAILS
 import com.islam.ecommerce.utils.UserDetailsException
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,8 +32,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(
+@HiltViewModel
+class UserViewModel @Inject constructor(
     private val appPreferencesRepository: AppPreferenceRepository,
     private val userPreferencesRepository: UserPreferenceRepository,
     private val userFirestoreRepository: UserFirestoreRepository,
@@ -94,24 +97,3 @@ class UserViewModel(
 
 }
 
-class UserViewModelFactory(
-    private val context: Context,
-) : ViewModelProvider.Factory {
-    private val appPreferencesRepository =
-        AppDataStoreRepositoryImpl(AppPreferencesDataSource(context))
-    private val userPreferencesRepository = UserPreferenceRepositoryImpl(context)
-    private val userFirestoreRepository = UserFirestoreRepositoryImpl()
-    private val firebaseAuthRepository = FirebaseAuthRepositoryImpl()
-
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST") return UserViewModel(
-                appPreferencesRepository,
-                userPreferencesRepository,
-                userFirestoreRepository,
-                firebaseAuthRepository
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

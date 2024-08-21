@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="loginViewModel"
+            name="ViewModel"
             type="com.islam.ecommerce.ui.auth.viewmodel.LoginViewModel" />
     </data>
 
@@ -64,7 +64,7 @@
                 android:drawableLeft="@drawable/ic_email"
                 android:hint="Your Email"
                 android:inputType="textEmailAddress"
-                android:text="@={loginViewModel.email}"
+                android:text="@={ViewModel.email}"
                 app:layout_constraintEnd_toEndOf="@+id/password"
                 app:layout_constraintStart_toStartOf="@+id/password"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -78,7 +78,7 @@
                 android:drawableLeft="@drawable/ic_password"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:text="@={loginViewModel.password}"
+                android:text="@={ViewModel.password}"
                 app:layout_constraintEnd_toEndOf="@+id/email_et"
                 app:layout_constraintStart_toStartOf="@+id/email_et"
                 app:layout_constraintTop_toBottomOf="@+id/email_et" />
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:onClick="@{()->loginViewModel.loginWithEmailAndPassword()}"
+                android:onClick="@{()->ViewModel.loginWithEmailAndPassword()}"
                 android:text="sign in"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/textView"
